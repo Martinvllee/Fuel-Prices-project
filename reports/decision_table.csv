@@ -1,0 +1,14 @@
+column,issue,n_rows,decision,why
+(all raw columns),27 raw columns not kept,9827,dropped,"Not needed for the questions or the contract: nested JSON (prix, services, horaires), rupture details, and administrative codes duplicated by region/departement names."
+carburants_indisponibles,kept to test the mechanism of missing SP95,9827,KEEP,TODO groupe: votre raison en une phrase
+"id, cp, adresse","same postal code + normalised address, different id",104,"keep both rows, do not merge","Two ids on one address may be two real stations (two operators). Merging needs the brand or operator, which the export does not give."
+prix_*,"prices outside [PRICE_MIN, PRICE_MAX]",0,set to NaN if any; none in the snapshot,A value of 19 for 1.9 is a typo: an empty price is safer than a wrong one.
+maj_*,update dates in the future,0,set to NaN if any,A future date cannot be a real update time: it is a clock or entry error.
+prix_sp95,missing share 72 % with strong regional dependence (permutation p < 0.001),7113,"keep NaN, no imputation; mechanism to name: MAR on region",Filling SP95 would invent prices for stations that may not sell this fuel. The regional dependence is shown in 4.3.
+prix_gazole,"IQR outliers on log scale, fence [2.012, 2.456]",318,"keep all, flag as extreme; no deletion","Most flagged prices are plausible (motorway, Paris). Separating errors from extremes needs a per-station check, not a rule."
+maj_gazole,update older than 30 days,243,"keep, report separately in section 6","The price is the last one published. A stale price is still the best available, but a modeller must know its age."
+maj_sp95,update older than 30 days,263,"keep, report separately in section 6","The price is the last one published. A stale price is still the best available, but a modeller must know its age."
+maj_e85,update older than 30 days,287,"keep, report separately in section 6","The price is the last one published. A stale price is still the best available, but a modeller must know its age."
+maj_gplc,update older than 30 days,331,"keep, report separately in section 6","The price is the last one published. A stale price is still the best available, but a modeller must know its age."
+maj_e10,update older than 30 days,130,"keep, report separately in section 6","The price is the last one published. A stale price is still the best available, but a modeller must know its age."
+maj_sp98,update older than 30 days,242,"keep, report separately in section 6","The price is the last one published. A stale price is still the best available, but a modeller must know its age."
